@@ -1,0 +1,16 @@
+char QUANTUM_BIND = 'j';
+char LANDING_BIND = 'n';
+char POWER_BIND = 'u';
+char ENGINE_BIND = 'i';
+char SHIELD_BIND = 'o';
+char WEAPONS_BIND = 'p';
+char SPOOL_BIND = 'j';
+char LIGHTS_BIND = 'l';
+char DOORS_BIND = ';';
+char ATC_BIND = 'n';
+// char SHLD_FRONT_BIND = '';
+// char SHLD_BACK_BIND = '';
+// char PWR_WEAPON_BIND = '';
+// char PWR_SHIELD_BIND = '';
+// char PWR_ENGINE_BIND = '';
+// char PWR_RST_BND = '';
