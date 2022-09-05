@@ -15,6 +15,8 @@ bool lastStateSpool = HIGH;
 bool lastStateFire = HIGH;
 bool lastStateDoor = HIGH;
 bool lastStateLock = HIGH;
+bool lastStateShldFrt = HIGH;
+bool lastStateShldBack = HIGH;
 byte gimbalState = 1;
 
 // Quantum
@@ -25,8 +27,8 @@ const int LONG_PRESS_TIME = 600; // 600 milliseconds - Quantum hold time
 
 void setup()
 {
-  pinMode(21, INPUT);
-  pinMode(20, INPUT_PULLUP);
+  pinMode(2, INPUT_PULLUP);
+  pinMode(3, INPUT_PULLUP);
   pinMode(4, INPUT_PULLUP);
   pinMode(5, INPUT_PULLUP);
   pinMode(6, INPUT_PULLUP);
@@ -39,6 +41,8 @@ void setup()
   pinMode(15, INPUT_PULLUP);
   pinMode(18, INPUT_PULLUP);
   pinMode(19, INPUT_PULLUP);
+  pinMode(20, INPUT_PULLUP);
+  pinMode(21, INPUT_PULLUP);
 
   // Checking the flip switch state to prevent rogue keypresses when the logic starts.
   lastStatePwr = digitalRead(21);
@@ -52,6 +56,8 @@ void setup()
   lastStateFire = digitalRead(10);
   lastStateDoor = digitalRead(14);
   lastStateLock = digitalRead(15);
+  lastStateShldFrt = digitalRead(3);
+  lastStateShldBack = digitalRead(2);
 
   Keyboard.begin();
   Serial.begin(115200);
