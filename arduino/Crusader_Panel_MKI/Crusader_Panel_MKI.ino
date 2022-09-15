@@ -9,13 +9,13 @@
 #define WEAP_PIN 10
 #define LNDG_PIN 11
 #define LIGHT_PIN 12
-#define DOOR_PIN 20
+#define DOOR_PIN 14
 #define ATC_PIN 19
 #define QT_PIN 18
-#define SPOOL_PIN 17
+#define SPOOL_PIN 15
 #define PWR_WEAP_PIN 16
-#define PWR_SHLD_PIN 15
-#define PWR_ENG_PIN 14
+//#define PWR_SHLD_PIN 15
+//#define PWR_ENG_PIN 14
 #define PWR_RST_PIN 13
 
 bool lastStatePwr = HIGH;
@@ -27,11 +27,11 @@ bool lastStateWeap = HIGH;
 // bool lastStateDecl = HIGH;
 // bool lastStateGear = HIGH;
 // bool lastStateLights = HIGH;
-// bool lastStateQuant = HIGH;
+bool lastStateQuant = HIGH;
 // bool lastStateGmbl1 = HIGH;
-// bool lastStateSpool = HIGH;
+bool lastStateSpool = HIGH;
 // bool lastStateFire = HIGH;
-// bool lastStateDoor = HIGH;
+bool lastStateDoor = HIGH;
 // bool lastStateLock = HIGH;
 // bool lastStateShldFrt = HIGH;
 // bool lastStateShldBack = HIGH;
@@ -49,14 +49,14 @@ void setup()
   // pinMode(SHIELD_FRONT_PIN, INPUT_PULLUP);
   pinMode(POWER_PIN, INPUT);
   pinMode(ENG_PIN, INPUT);
-  pinMode(SHLD_PIN, INPUT);
-  pinMode(WEAP_PIN, INPUT);
+  //  pinMode(SHLD_PIN, INPUT);
+  //  pinMode(WEAP_PIN, INPUT);
   // pinMode(LNDG_PIN, INPUT_PULLUP);
   // pinMode(LIGHT_PIN, INPUT_PULLUP);
-  // pinMode(DOOR_PIN, INPUT_PULLUP);
+  pinMode(DOOR_PIN, INPUT_PULLUP);
   // pinMode(ATC_PIN, INPUT_PULLUP);
-  // pinMode(QT_PIN, INPUT_PULLUP);
-  // pinMode(SPOOL_PIN, INPUT_PULLUP);
+  pinMode(QT_PIN, INPUT_PULLUP);
+  pinMode(SPOOL_PIN, INPUT);
   // pinMode(PWR_WEAP_PIN, INPUT_PULLUP);
   // pinMode(PWR_SHLD_PIN, INPUT_PULLUP);
   // pinMode(PWR_ENG_PIN, INPUT_PULLUP);
@@ -67,12 +67,12 @@ void setup()
   // lastStateGear = digitalRead(6);
   lastStatePwr = digitalRead(POWER_PIN);
   lastStateEngine = digitalRead(ENG_PIN);
-  lastStateShld = digitalRead(SHLD_PIN);
-  lastStateWeap = digitalRead(WEAP_PIN);
+  //  lastStateShld = digitalRead(SHLD_PIN);
+  //  lastStateWeap = digitalRead(WEAP_PIN);
   // lastStateAtc = digitalRead(8);
   // lastStateSpool = digitalRead(9);
   // lastStateFire = digitalRead(10);
-  // lastStateDoor = digitalRead(14);
+  lastStateDoor = digitalRead(DOOR_PIN);
   // lastStateLock = digitalRead(15);
   // lastStateShldFrt = digitalRead(3);
   // lastStateShldBack = digitalRead(2);
@@ -109,47 +109,49 @@ void setup()
 
 void loop()
 {
-  // // Quant
-  // int buttonStateQuant = digitalRead(15);
+  // Quant
+  int buttonStateQuant = digitalRead(QT_PIN);
 
-  // if ((buttonStateQuant != lastStateQuant) && (buttonStateQuant == LOW))
-  // // initial button press
-  // {
-  //   pressedTime = millis();
-  //   quantPressing = true;
-  //   quantLongDetected = false;
-  // }
-  // else if ((buttonStateQuant != lastStateQuant) && (buttonStateQuant == HIGH))
-  // { // button is released
-  //   quantPressing = false;
-  //   delay(10);
-  //   Keyboard.releaseAll();
-  // }
+  if ((buttonStateQuant != lastStateQuant) && (buttonStateQuant == LOW))
+    // initial button press
+  {
+    pressedTime = millis();
+    quantPressing = true;
+    quantLongDetected = false;
+  }
+  else if ((buttonStateQuant != lastStateQuant) && (buttonStateQuant == HIGH))
+  { // button is released
+    quantPressing = false;
+    delay(10);
+    Keyboard.releaseAll();
+  }
 
-  // if (quantPressing == true && quantLongDetected == false)
-  // {
-  //   long pressDuration = millis() - pressedTime;
+  if (quantPressing == true && quantLongDetected == false)
+  {
+    long pressDuration = millis() - pressedTime;
 
-  //   if (pressDuration > LONG_PRESS_TIME)
-  //   {
-  //     Keyboard.press(QUANTUM_BIND);
-  //     quantLongDetected = true;
-  //   }
-  // }
+    if (pressDuration > LONG_PRESS_TIME)
+    {
+      Keyboard.press(QUANTUM_BIND);
+      quantLongDetected = true;
+    }
+  }
 
-  // // save the the last state
-  // lastStateQuant = buttonStateQuant;
+  // save the the last state
+  lastStateQuant = buttonStateQuant;
 
-  // // Quantum Spool
-  // int buttonStateSpool = digitalRead(9);
-  // if ((buttonStateSpool != lastStateSpool) && (buttonStateSpool == LOW))
-  // {
-  //   Keyboard.press(SPOOL_BIND);
-  //   delay(10);
-  //   Keyboard.releaseAll();
-  //   delay(200);
-  // }
-  // lastStateSpool = buttonStateSpool;
+  // Quantum Spool
+  int buttonStateSpool = digitalRead(SPOOL_PIN);
+  if ((buttonStateSpool != lastStateSpool) && (buttonStateSpool == LOW))
+  {
+
+    Serial.println(digitalRead(SPOOL_PIN));
+    Keyboard.press(SPOOL_BIND);
+    delay(10);
+    Keyboard.releaseAll();
+    delay(200);
+  }
+  lastStateSpool = buttonStateSpool;
 
   // // ATC
   // int buttonStateAtc = digitalRead(15);
@@ -187,7 +189,7 @@ void loop()
   // }
   // lastStateDecl = buttonStateDecl;
 
-  // Power
+  //   Power
   if (digitalRead(POWER_PIN) != lastStatePwr)
   {
     Keyboard.press('u');
@@ -196,18 +198,7 @@ void loop()
     lastStatePwr = !lastStatePwr;
   }
 
-
-
-  // Shields
-  if (digitalRead(SHLD_PIN) != lastStateShld)
-  {
-    Keyboard.press(SHIELD_BIND);
-    delay(10);
-    Keyboard.releaseAll();
-    lastStateShld = !lastStateShld;
-  }
-
-  // Thrusters
+  //   Engines
   if (digitalRead(ENG_PIN) != lastStateEngine)
   {
     Keyboard.press(ENGINE_BIND);
@@ -216,14 +207,27 @@ void loop()
     lastStateEngine = !lastStateEngine;
   }
 
-  // Weapons
-  if (digitalRead(WEAP_PIN) != lastStateWeap)
-  {
-    Keyboard.press(WEAPONS_BIND);
-    delay(10);
-    Keyboard.releaseAll();
-    lastStateWeap = !lastStateWeap;
-  }
+
+  //
+  //  // Shields
+  //  if (digitalRead(SHLD_PIN) != lastStateShld)
+  //  {
+  //    Keyboard.press(SHIELD_BIND);
+  //    delay(10);
+  //    Keyboard.releaseAll();
+  //    lastStateShld = !lastStateShld;
+  //  }
+  //
+
+  //
+  //  // Weapons
+  //  if (digitalRead(WEAP_PIN) != lastStateWeap)
+  //  {
+  //    Keyboard.press(WEAPONS_BIND);
+  //    delay(10);
+  //    Keyboard.releaseAll();
+  //    lastStateWeap = !lastStateWeap;
+  //  }
 
   // // Landing gear
   // if (digitalRead(6) != lastStateGear)
@@ -255,16 +259,29 @@ void loop()
   //   lastStateFire = !lastStateFire;
   // }
 
-  // // Doors open
-  // if (digitalRead(16) != lastStateDoor && digitalRead(16) == LOW)
-  // {
-  //   Keyboard.press(KEY_LEFT_ALT);
-  //   delay(10);
-  //   Keyboard.press('o');
-  //   delay(10);
-  //   Keyboard.releaseAll();
-  //   lastStateDoor = !lastStateDoor;
-  // }
+
+  // Doors Toggle
+  int buttonStateDoors = digitalRead(DOOR_PIN);
+  if ((buttonStateDoors != lastStateDoor) && (buttonStateDoors == LOW))
+  {
+
+    Keyboard.press(DOORS_BIND);
+    delay(10);
+    Keyboard.releaseAll();
+    delay(200);
+  }
+  lastStateDoor = buttonStateDoors;
+
+  //   // Doors open
+  //   if (digitalRead(DOOR_PIN) != lastStateDoor && digitalRead(DOOR_PIN) == LOW)
+  //   {
+  //     Keyboard.press('k');
+  //     delay(10);
+  ////     Keyboard.press('o');
+  ////     delay(10);
+  //     Keyboard.releaseAll();
+  //     lastStateDoor = !lastStateDoor;
+  //   }
 
   // // Doors close
   // if (digitalRead(16) != lastStateDoor && digitalRead(16) == HIGH)
