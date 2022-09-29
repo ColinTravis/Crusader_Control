@@ -40,6 +40,7 @@ bool lastStatePwrWeap = HIGH;
 // byte gimbalState = 1;
 
 // Quantum
+bool resetPressing = false;
 unsigned long pressedTime = 0;
 bool quantPressing = false;
 bool quantLongDetected = false;
@@ -57,8 +58,8 @@ void setup()
   pinMode(LIGHT_PIN, INPUT_PULLUP);
   pinMode(DOOR_PIN, INPUT_PULLUP);
   pinMode(ATC_PIN, INPUT_PULLUP);
-  pinMode(QT_PIN, INPUT_PULLUP);
-  pinMode(SPOOL_PIN, INPUT);
+  pinMode(QT_PIN, INPUT);
+  pinMode(SPOOL_PIN, INPUT_PULLUP);
   pinMode(PWR_WEAP_PIN, INPUT_PULLUP);
   pinMode(PWR_SHLD_PIN, INPUT_PULLUP);
   pinMode(PWR_ENG_PIN, INPUT_PULLUP);
@@ -88,11 +89,12 @@ void setup()
 
 void loop()
 {
+
   // Quant
   int buttonStateQuant = digitalRead(QT_PIN);
-
+  DEBUG_SERIAL.println(digitalRead(QT_PIN));
   if ((buttonStateQuant != lastStateQuant) && (buttonStateQuant == LOW))
-  // initial button press
+    // initial button press
   {
     pressedTime = millis();
     quantPressing = true;
@@ -115,11 +117,11 @@ void loop()
       quantLongDetected = true;
     }
   }
-
   // save the the last state
   lastStateQuant = buttonStateQuant;
 
-  // Quantum Spool
+  //  Quantum Spool
+
   int buttonStateSpool = digitalRead(SPOOL_PIN);
   if ((buttonStateSpool != lastStateSpool) && (buttonStateSpool == LOW))
   {
@@ -130,6 +132,7 @@ void loop()
     delay(200);
   }
   lastStateSpool = buttonStateSpool;
+
 
   // ATC
   int buttonStateAtc = digitalRead(15);
@@ -180,36 +183,30 @@ void loop()
     lastStateWeap = !lastStateWeap;
   }
 
-  // Landing gear
-  //  int buttonStateLanding = digitalRead(LNDG_PIN);
-  //  if ((buttonStateLanding != lastStateGear) && (buttonStateLanding == LOW))
-  //  {
-
-  //    Keyboard.press(LANDING_BIND);
-  //    delay(10);
-  //    Keyboard.releaseAll();
-  //    delay(200);
-  //  }
-  //  lastStateGear = buttonStateLanding;
-
-  // Landing gear
-  if (digitalRead(LNDG_PIN) != lastStateGear)
+  // Landing gear (debounce for momentary switch)
+  int buttonStateLanding = digitalRead(LNDG_PIN);
+  if ((buttonStateLanding != lastStateGear) && (buttonStateLanding == LOW))
   {
+
     Keyboard.press(LANDING_BIND);
     delay(10);
     Keyboard.releaseAll();
     delay(200);
-    lastStateGear = !lastStateGear;
   }
+  lastStateGear = buttonStateLanding;
+
 
   // Lights
-  if (digitalRead(LIGHT_PIN) != lastStateLights)
+  int buttonStateLights = digitalRead(LIGHT_PIN);
+  if ((buttonStateLights != lastStateLights) && (buttonStateLights == LOW))
   {
+
     Keyboard.press(LIGHTS_BIND);
     delay(10);
     Keyboard.releaseAll();
-    lastStateLights = !lastStateLights;
+    delay(200);
   }
+  lastStateLights = buttonStateLights;
 
   // Doors Toggle
   int buttonStateDoors = digitalRead(DOOR_PIN);
@@ -247,10 +244,13 @@ void loop()
   }
   lastStateShldBack = buttonStateShldBack;
 
+
+
+
   // Power Triangle
   /////
 
-  // Power Weapon Priority
+ // Power Weapon Priority
   int buttonStatePwrWeap = digitalRead(PWR_WEAP_PIN);
   if ((buttonStatePwrWeap != lastStatePwrWeap) && (buttonStatePwrWeap == LOW))
   {
@@ -285,6 +285,7 @@ void loop()
   lastStatePwrEng = buttonStatePwrEng;
 
   // Power Reset Priority
+
   int buttonStatePwrRst = digitalRead(PWR_RST_PIN);
   if ((buttonStatePwrRst != lastStatePwrRst) && (buttonStatePwrRst == LOW))
   {
@@ -295,4 +296,5 @@ void loop()
     delay(200);
   }
   lastStatePwrRst = buttonStatePwrRst;
+
 }
