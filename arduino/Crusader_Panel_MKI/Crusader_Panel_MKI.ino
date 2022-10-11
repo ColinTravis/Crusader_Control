@@ -6,10 +6,10 @@
 
 #define SHIELD_BACK_PIN 2
 #define SHIELD_FRONT_PIN 3
-#define POWER_PIN 4
-#define ENG_PIN 5
-#define SHLD_PIN 6
-#define WEAP_PIN 7
+#define POWER_PIN 7
+#define ENG_PIN 6
+#define SHLD_PIN 5
+#define WEAP_PIN 4
 #define LNDG_PIN 8
 #define LIGHT_PIN 9
 #define DOOR_PIN 21
@@ -250,7 +250,7 @@ void loop()
   // Power Triangle
   /////
 
- // Power Weapon Priority
+  // Power Weapon Priority
   int buttonStatePwrWeap = digitalRead(PWR_WEAP_PIN);
   if ((buttonStatePwrWeap != lastStatePwrWeap) && (buttonStatePwrWeap == LOW))
   {

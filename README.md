@@ -1,8 +1,6 @@
 # Crusader Industries Control System 🕹️
 > Switch control for space sims, designed for Star Citizen
 
-**DO NOT FLASH CURRENTLY - Still in development**
-
 - [Crusader Industries Control System 🕹️](#crusader-industries-control-system-️)
     - [What works so far](#what-works-so-far)
     - [Button Layout](#button-layout)
@@ -15,6 +13,13 @@
 
 ### What works so far
 Currently, this project includes STLs for 3D printing a box to contain a PCB and switches wired in with JST connectors. The base is designed to stop printing midway to place washers in as weights.
+
+### To Do
+- [ ] Update Readme
+- [ ] Finish Programming (with mirrored switches)
+- [x] Finalize Current PCB design
+- [x] Finalize Box/Lid Design
+- [ ] Cut New Acrylic with repositioned labels
 
 ### Button Layout
 There is an Illustrator file for sketching out the layout of the lid.
