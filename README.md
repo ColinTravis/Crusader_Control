@@ -3,6 +3,7 @@
 
 - [Crusader Industries Control System 🕹️](#crusader-industries-control-system-️)
     - [What works so far](#what-works-so-far)
+    - [To Do](#to-do)
     - [Button Layout](#button-layout)
     - [PCB Info](#pcb-info)
     - [Hardware](#hardware)
@@ -14,20 +15,20 @@
 ### What works so far
 Currently, this project includes STLs for 3D printing a box to contain a PCB and switches wired in with JST connectors. The base is designed to stop printing midway to place washers in as weights.
 
-### To Do
-- [ ] Update Readme
+### To Do 📋
+- [x] Update Readme
 - [ ] Finish Programming (with mirrored switches)
 - [x] Finalize Current PCB design
 - [x] Finalize Box/Lid Design
 - [ ] Cut New Acrylic with repositioned labels
 
-### Button Layout
+### Button Layout 🟢🟠🔵🔴
 There is an Illustrator file for sketching out the layout of the lid.
 
-### PCB Info
+### PCB Info 📝
 The PCB was designed in Fusion360, as was the lid to the box, and ordered through [JLCPCB](https://jlcpcb.com/). There are cutouts in the PCB to fit the current switches.
 
-### Hardware
+### Hardware 💻
 This is the hardware used:
 - Adafruit Pro Micro
 -
@@ -37,8 +38,8 @@ This is the hardware used:
 
 ![Arduino Pro Micro](readme_images/arduino_pro_micro.jpg)
 
-# Software
+# Software 👨‍💻
 # Assembly Notes
-# Credits
-### Author
+# Credits 🎉
+## Author
 - [@colintravis](https://www.colintravis.com)
